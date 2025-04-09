@@ -1,8 +1,8 @@
 <h1>
 <h1>Der Fall P Middy</h1></h1>
 <h1>style="color red" Wanted</h1>
-<img src="https://github.com/user-attachments/assets/40d330ea-27ef-404e-a71b-93f1e4d951fa" width="300" height="180">
-<h1>vogeschichte</h1>
+<img src="https://github.com/user-attachments/assets/9d7e64b0-6b9a-4e72-bf57-2285eeea5a5b" width="300" height="180">
+
 
 
 
