@@ -4,9 +4,9 @@
 
 
 <h2>Wo kann ich EA SPORTS FC™ 25 spielen?</h2>
-<p>PlayStation® 5P</p>
 <p>PlayStation® 5
 <p>PlayStation® 4</p>
+<p>Xbox One</p>
 
 
 
