@@ -8,7 +8,7 @@
 <p>-PlayStation® 4</p>
 <p>-Xbox One</p>
 <p>-Nintendo Switch™</p>
-<p>PC</p>
+<p>-PC</p>
 
 
 
