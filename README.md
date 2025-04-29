@@ -7,6 +7,7 @@
 <p>-PlayStation® 5
 <p>-PlayStation® 4</p>
 <p>-Xbox One</p>
+<p>Nintendo Switch™</p>
 
 
 
