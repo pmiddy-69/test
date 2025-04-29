@@ -4,6 +4,12 @@
 
 
 <h2>Wo kann ich EA SPORTS FC™ 25 spielen?</h2>
+<p>PlayStation® 5
+PlayStation® 4
+Xbox Series X|S
+Xbox One
+Nintendo Switch™
+PC</p>
 
 
 
