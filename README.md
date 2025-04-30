@@ -12,5 +12,9 @@
 
 
 
+<h2>Infos über das spiel</h2>
+<p>Das Spiel EA SPORTS FC™ 25 ist einer erfinung des Videoherstellers EA™ , das sich rund um Fußball handelt . Das erste spiel ,,FIFA International Soccer´´ kam 1993 raus . Jetzt fragen sich manche bestimmt , warum das Spiel jetzt FIFA und nicht EA SPORTS FC heißt . Das hst einen einfache Grund , denn seit 2024 gehen die beiden Spielersteller FIFA™ und EA SPORTS™ getrennte Wege . Allerdings ist EA SPORTS™</p>
+
+
 
 
