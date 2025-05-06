@@ -16,7 +16,7 @@
 <p>Das Spiel EA SPORTS FC™ 25 ist einer Erfindung des Videoherstellers EA™ , das sich rund um Fußball handelt . Das erste spiel ,,FIFA International Soccer´´ kam 1993 raus . Jetzt fragen sich manche bestimmt , warum das Spiel jetzt FIFA und nicht EA SPORTS FC heißt . Das hat einen einfache Grund , denn seit 2024 gehen die beiden Spielersteller FIFA™ und EA SPORTS™ getrennte Wege . Allerdings ist EA SPORTS™ die einzige der beiden Firmen , die der Videospielcommunity weiter ein Fußball-Videospiel liefert.Im September 2024, dem Monat der Veröffentlichung, erreichte das Spiel einen Spitzenwert von 109.977 gleichzeitigen Spielern . Im März 2025 lag dieser Wert bei 91.519 gleichzeitigen Spielern . Bei vielen Videospielern kommt das Spiel sehr gut an jedoch liegt es auch oft in der Kritik durch Spielfehler und schlechte Patches und Updates. Mehr über das spiel erfahren sie in diesem artikel</p>
 
 <iframe width="560" height="315" 
-    src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+    src="https:https://www.reddit.com/r/EASportsFC/comments/1e5lwe0/ea_fc_25_official_reveal_trailer/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button" 
     title="YouTube Video" frameborder="0" 
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
     allowfullscreen>
