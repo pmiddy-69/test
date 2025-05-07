@@ -1,6 +1,7 @@
 <h1>
 <h1 style="font-size:300%;">EA FC 25</h1>
-<img src="https://github.com/user-attachments/assets/9d7e64b0-6b9a-4e72-bf57-2285eeea5a5b" width="150" height="230">
+<img src="![image](https://github.com/user-attachments/assets/b322d135-1950-4172-94b6-2a139c1d2ebd)
+" width="150" height="230">
 
 
 <h2>Wo kann ich EA SPORTS FC™ 25 spielen?</h2>
