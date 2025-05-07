@@ -1,6 +1,8 @@
 <h1>
 <h1 style="font-size:300%;">EA FC 25</h1>
-<img src="![image](https://github.com/user-attachments/assets/b322d135-1950-4172-94b6-2a139c1d2ebd)
+<img src="https://game4u.co.za/wp-content/uploads/2024/09/fc-25-banner.png"
+
+
 " width="150" height="230">
 
 
