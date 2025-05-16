@@ -35,7 +35,7 @@
 
 
 
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
@@ -93,13 +93,13 @@
 
 <h1>EAFC 25 – Squad Builder (Drag & Drop)</h1>
 
-<div class="bench">
-  <img src="https://via.placeholder.com/100x140?text=Mbappe" draggable="true" class="player-img" data-name="Mbappé" data-rating="91" data-nation="France">
-  <img src="https://via.placeholder.com/100x140?text=Haaland" draggable="true" class="player-img" data-name="Haaland" data-rating="90" data-nation="Norway">
-  <img src="https://via.placeholder.com/100x140?text=Kane" draggable="true" class="player-img" data-name="Kane" data-rating="89" data-nation="England">
-  <img src="https://via.placeholder.com/100x140?text=Modric" draggable="true" class="player-img" data-name="Modrić" data-rating="87" data-nation="Croatia">
-  <img src="https://via.placeholder.com/100x140?text=Bellingham" draggable="true" class="player-img" data-name="Bellingham" data-rating="86" data-nation="England">
-  <img src="https://via.placeholder.com/100x140?text=De+Gea" draggable="true" class="player-img" data-name="De Gea" data-rating="85" data-nation="Spain">
+<div class="bench" id="bench">
+  <img src="https://cdn.sofifa.net/players/231/747/24_120.png" draggable="true" class="player-img" data-name="Mbappé" data-rating="91" data-nation="France" data-club="PSG">
+  <img src="https://cdn.sofifa.net/players/239/085/24_120.png" draggable="true" class="player-img" data-name="Haaland" data-rating="91" data-nation="Norway" data-club="Man City">
+  <img src="https://cdn.sofifa.net/players/202/126/24_120.png" draggable="true" class="player-img" data-name="Kane" data-rating="89" data-nation="England" data-club="Bayern">
+  <img src="https://cdn.sofifa.net/players/177/003/24_120.png" draggable="true" class="player-img" data-name="Modrić" data-rating="87" data-nation="Croatia" data-club="Real Madrid">
+  <img src="https://cdn.sofifa.net/players/247/635/24_120.png" draggable="true" class="player-img" data-name="Bellingham" data-rating="86" data-nation="England" data-club="Real Madrid">
+  <img src="https://cdn.sofifa.net/players/193/080/24_120.png" draggable="true" class="player-img" data-name="De Gea" data-rating="85" data-nation="Spain" data-club="Free Agent">
 </div>
 
 <div class="field">
@@ -108,23 +108,38 @@
   <div class="position dropzone" data-position="Stürmer"></div>
 </div>
 
-<h2 id="summary">Durchschnittliches Rating: 0 | Chemie: 0%</h2>
+<h2 id="summary">Durchschnittliches Rating: 0 | Chemie: 0</h2>
 
 <script>
   const dropzones = document.querySelectorAll('.dropzone');
   const summary = document.getElementById('summary');
+  const bench = document.getElementById('bench');
 
-  document.querySelectorAll('.player-img').forEach(img => {
+  function makeDraggable(img) {
     img.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData('text/html', e.target.outerHTML);
+      e.dataTransfer.setData('text/plain', JSON.stringify({
+        outerHTML: e.target.outerHTML,
+        name: e.target.dataset.name
+      }));
     });
-  });
+  }
+
+  document.querySelectorAll('.player-img').forEach(makeDraggable);
 
   dropzones.forEach(zone => {
     zone.addEventListener('dragover', (e) => e.preventDefault());
     zone.addEventListener('drop', (e) => {
       e.preventDefault();
-      zone.innerHTML = e.dataTransfer.getData('text/html');
+      const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+      const newPlayer = document.createElement('div');
+      newPlayer.innerHTML = data.outerHTML;
+      const img = newPlayer.firstChild;
+      img.addEventListener('click', () => {
+        bench.appendChild(img);
+        updateStats();
+      });
+      zone.innerHTML = '';
+      zone.appendChild(img);
       updateStats();
     });
   });
@@ -133,35 +148,37 @@
     let totalRating = 0;
     let count = 0;
     let nations = [];
+    let clubs = [];
 
     dropzones.forEach(zone => {
       const img = zone.querySelector('img');
       if (img) {
         const rating = parseInt(img.dataset.rating);
-        const nation = img.dataset.nation;
         totalRating += rating;
-        nations.push(nation);
+        nations.push(img.dataset.nation);
+        clubs.push(img.dataset.club);
         count++;
       }
     });
 
     const average = count > 0 ? (totalRating / count).toFixed(1) : 0;
+    const nationBonus = getMostCommonCount(nations);
+    const clubBonus = getMostCommonCount(clubs);
+    const chemie = Math.min(nationBonus + clubBonus, count);
 
-    // Chemie = % der Spieler mit der gleichen Nation (mehr = besser)
-    const chemie = count > 1 ? Math.round((getMostCommonCount(nations) / count) * 100) : 0;
-
-    summary.textContent = `Durchschnittliches Rating: ${average} | Chemie: ${chemie}%`;
+    summary.textContent = `Durchschnittliches Rating: ${average} | Chemie: ${chemie}/${count}`;
   }
 
   function getMostCommonCount(arr) {
     const map = {};
     arr.forEach(val => map[val] = (map[val] || 0) + 1);
-    return Math.max(...Object.values(map));
+    return arr.length ? Math.max(...Object.values(map)) : 0;
   }
 </script>
 
 </body>
 </html>
+
  
 
 
