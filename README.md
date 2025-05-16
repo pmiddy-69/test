@@ -59,11 +59,16 @@
       margin: 1rem;
     }
     .pitch {
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: 10px;
-      justify-content: center;
-      align-content: center;
+      align-items: center;
       margin: 2rem auto;
+    }
+    .line {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
     }
     .slot, .player-card {
       width: 100px;
@@ -116,9 +121,9 @@
 
   <script>
     const formations = {
-      "4-3-3": ["GK", "LB", "CB", "CB", "RB", "CM", "CM", "CM", "LW", "ST", "RW"],
-      "4-4-2": ["GK", "LB", "CB", "CB", "RB", "LM", "CM", "CM", "RM", "ST", "ST"],
-      "3-5-2": ["GK", "CB", "CB", "CB", "LM", "CM", "CAM", "CM", "RM", "ST", "ST"]
+      "4-3-3": [["GK"], ["LB", "CB", "CB", "RB"], ["CM", "CM", "CM"], ["LW", "ST", "RW"]],
+      "4-4-2": [["GK"], ["LB", "CB", "CB", "RB"], ["LM", "CM", "CM", "RM"], ["ST", "ST"]],
+      "3-5-2": [["GK"], ["CB", "CB", "CB"], ["LM", "CM", "CAM", "CM", "RM"], ["ST", "ST"]]
     };
 
     const players = [
@@ -145,25 +150,30 @@
       players.forEach((p, index) => addPlayerToBank(p, index));
 
       const layout = formations[formation];
-      layout.forEach(pos => {
-        const slot = document.createElement("div");
-        slot.className = "slot";
-        slot.dataset.pos = pos;
-        slot.ondragover = (e) => e.preventDefault();
-        slot.ondrop = (e) => {
-          const id = e.dataTransfer.getData("text");
-          const card = document.getElementById(id);
-          if (!Array.from(pitch.querySelectorAll(".player-card")).some(c => c.dataset.name === card.dataset.name)) {
-            if (card.dataset.pos === slot.dataset.pos) {
-              if (slot.firstChild) bank.appendChild(slot.firstChild);
-              slot.innerHTML = "";
-              slot.appendChild(card);
-              updateStats();
+      layout.forEach(row => {
+        const line = document.createElement("div");
+        line.className = "line";
+        row.forEach(pos => {
+          const slot = document.createElement("div");
+          slot.className = "slot";
+          slot.dataset.pos = pos;
+          slot.ondragover = (e) => e.preventDefault();
+          slot.ondrop = (e) => {
+            const id = e.dataTransfer.getData("text");
+            const card = document.getElementById(id);
+            if (!Array.from(pitch.querySelectorAll(".player-card")).some(c => c.dataset.name === card.dataset.name)) {
+              if (card.dataset.pos === slot.dataset.pos) {
+                if (slot.firstChild) bank.appendChild(slot.firstChild);
+                slot.innerHTML = "";
+                slot.appendChild(card);
+                updateStats();
+              }
             }
-          }
-        };
-        slot.textContent = pos;
-        pitch.appendChild(slot);
+          };
+          slot.textContent = pos;
+          line.appendChild(slot);
+        });
+        pitch.appendChild(line);
       });
     }
 
