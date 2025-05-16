@@ -116,22 +116,22 @@
 
   <script>
     const formations = {
-      "4-3-3": [1, 4, 3, 3],
-      "4-4-2": [1, 4, 4, 2],
-      "3-5-2": [1, 3, 5, 2],
+      "4-3-3": ["GK", "LB", "CB", "CB", "RB", "CM", "CM", "CM", "LW", "ST", "RW"],
+      "4-4-2": ["GK", "LB", "CB", "CB", "RB", "LM", "CM", "CM", "RM", "ST", "ST"],
+      "3-5-2": ["GK", "CB", "CB", "CB", "LM", "CM", "CAM", "CM", "RM", "ST", "ST"]
     };
 
     const players = [
-      { name: "Mbappé", rating: 91, nation: "France", club: "PSG", img: "https://cdn.sofifa.net/players/231/747/24_120.png" },
-      { name: "Haaland", rating: 91, nation: "Norway", club: "Man City", img: "https://cdn.sofifa.net/players/239/085/24_120.png" },
-      { name: "Messi", rating: 90, nation: "Argentina", club: "Inter Miami", img: "https://cdn.sofifa.net/players/158/023/24_120.png" },
-      { name: "De Bruyne", rating: 91, nation: "Belgium", club: "Man City", img: "https://cdn.sofifa.net/players/192/985/24_120.png" },
-      { name: "Modrić", rating: 87, nation: "Croatia", club: "Real Madrid", img: "https://cdn.sofifa.net/players/177/003/24_120.png" },
-      { name: "Rodri", rating: 89, nation: "Spain", club: "Man City", img: "https://cdn.sofifa.net/players/231/866/24_120.png" },
-      { name: "Salah", rating: 89, nation: "Egypt", club: "Liverpool", img: "https://cdn.sofifa.net/players/209/331/24_120.png" },
-      { name: "Vinícius Jr.", rating: 89, nation: "Brazil", club: "Real Madrid", img: "https://cdn.sofifa.net/players/238/794/24_120.png" },
-      { name: "Lewandowski", rating: 90, nation: "Poland", club: "Barcelona", img: "https://cdn.sofifa.net/players/188/545/24_120.png" },
-      { name: "Alisson", rating: 89, nation: "Brazil", club: "Liverpool", img: "https://cdn.sofifa.net/players/212/831/24_120.png" },
+      { name: "Mbappé", rating: 91, nation: "France", club: "PSG", pos: "ST", img: "https://cdn.sofifa.net/players/231/747/24_120.png" },
+      { name: "Haaland", rating: 91, nation: "Norway", club: "Man City", pos: "ST", img: "https://cdn.sofifa.net/players/239/085/24_120.png" },
+      { name: "Messi", rating: 90, nation: "Argentina", club: "Inter Miami", pos: "RW", img: "https://cdn.sofifa.net/players/158/023/24_120.png" },
+      { name: "De Bruyne", rating: 91, nation: "Belgium", club: "Man City", pos: "CM", img: "https://cdn.sofifa.net/players/192/985/24_120.png" },
+      { name: "Modrić", rating: 87, nation: "Croatia", club: "Real Madrid", pos: "CM", img: "https://cdn.sofifa.net/players/177/003/24_120.png" },
+      { name: "Rodri", rating: 89, nation: "Spain", club: "Man City", pos: "CDM", img: "https://cdn.sofifa.net/players/231/866/24_120.png" },
+      { name: "Salah", rating: 89, nation: "Egypt", club: "Liverpool", pos: "RW", img: "https://cdn.sofifa.net/players/209/331/24_120.png" },
+      { name: "Vinícius Jr.", rating: 89, nation: "Brazil", club: "Real Madrid", pos: "LW", img: "https://cdn.sofifa.net/players/238/794/24_120.png" },
+      { name: "Lewandowski", rating: 90, nation: "Poland", club: "Barcelona", pos: "ST", img: "https://cdn.sofifa.net/players/188/545/24_120.png" },
+      { name: "Alisson", rating: 89, nation: "Brazil", club: "Liverpool", pos: "GK", img: "https://cdn.sofifa.net/players/212/831/24_120.png" },
     ];
 
     const pitch = document.getElementById("pitch");
@@ -144,28 +144,26 @@
       bank.innerHTML = "";
       players.forEach((p, index) => addPlayerToBank(p, index));
 
-      const rows = formations[formation];
-      rows.forEach(count => {
-        const row = document.createElement("div");
-        row.style.display = "flex";
-        row.style.justifyContent = "center";
-        row.style.gap = "10px";
-        for (let j = 0; j < count; j++) {
-          const slot = document.createElement("div");
-          slot.className = "slot";
-          slot.ondragover = (e) => e.preventDefault();
-          slot.ondrop = (e) => {
-            const id = e.dataTransfer.getData("text");
-            const card = document.getElementById(id);
-            if (!Array.from(pitch.querySelectorAll(".player-card")).some(c => c.dataset.name === card.dataset.name)) {
+      const layout = formations[formation];
+      layout.forEach(pos => {
+        const slot = document.createElement("div");
+        slot.className = "slot";
+        slot.dataset.pos = pos;
+        slot.ondragover = (e) => e.preventDefault();
+        slot.ondrop = (e) => {
+          const id = e.dataTransfer.getData("text");
+          const card = document.getElementById(id);
+          if (!Array.from(pitch.querySelectorAll(".player-card")).some(c => c.dataset.name === card.dataset.name)) {
+            if (card.dataset.pos === slot.dataset.pos) {
+              if (slot.firstChild) bank.appendChild(slot.firstChild);
               slot.innerHTML = "";
               slot.appendChild(card);
               updateStats();
             }
-          };
-          row.appendChild(slot);
-        }
-        pitch.appendChild(row);
+          }
+        };
+        slot.textContent = pos;
+        pitch.appendChild(slot);
       });
     }
 
@@ -178,6 +176,7 @@
       card.dataset.rating = p.rating;
       card.dataset.club = p.club;
       card.dataset.nation = p.nation;
+      card.dataset.pos = p.pos;
       card.innerHTML = `<img src="${p.img}" alt="${p.name}" /><span>${p.name}</span><div class="chemie-display">🔵0</div>`;
       card.ondragstart = (e) => e.dataTransfer.setData("text", card.id);
       card.onclick = () => {
@@ -205,7 +204,6 @@
       const avg = cards.length ? (total / cards.length).toFixed(1) : 0;
       statsDisplay.textContent = `Durchschnittliches Rating: ${avg}`;
 
-      // EAFC 3-Punkte-Chemie-System
       cards.forEach(card => {
         const club = card.dataset.club;
         const nation = card.dataset.nation;
@@ -225,6 +223,7 @@
   </script>
 </body>
 </html>
+
 
 
 
