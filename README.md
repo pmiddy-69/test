@@ -36,7 +36,7 @@
 
 
 
-l<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
@@ -51,6 +51,11 @@ l<!DOCTYPE html>
       color: white;
     }
     .formation-selector {
+      margin: 1rem;
+    }
+    .stats {
+      text-align: center;
+      font-size: 1.2rem;
       margin: 1rem;
     }
     .pitch {
@@ -95,15 +100,16 @@ l<!DOCTYPE html>
       <option value="3-5-2">3-5-2</option>
     </select>
   </div>
+  <div class="stats" id="stats">Durchschnittliches Rating: 0 | Chemie: 0</div>
   <div id="pitch" class="pitch"></div>
   <h2>Bank</h2>
   <div class="bank" id="bank"></div>
 
   <script>
     const formations = {
-      "4-3-3": [4, 3, 3, 1],
-      "4-4-2": [4, 4, 2, 1],
-      "3-5-2": [3, 5, 2, 1],
+      "4-3-3": [1, 4, 3, 3],
+      "4-4-2": [1, 4, 4, 2],
+      "3-5-2": [1, 3, 5, 2],
     };
 
     const players = [
@@ -122,16 +128,17 @@ l<!DOCTYPE html>
     const pitch = document.getElementById("pitch");
     const bank = document.getElementById("bank");
     const formationSelector = document.getElementById("formation");
+    const statsDisplay = document.getElementById("stats");
 
     function createPitch(formation) {
       pitch.innerHTML = "";
       const rows = formations[formation];
-      rows.forEach((count) => {
+      rows.forEach((count, i) => {
         const row = document.createElement("div");
         row.style.display = "flex";
         row.style.justifyContent = "center";
         row.style.gap = "10px";
-        for (let i = 0; i < count; i++) {
+        for (let j = 0; j < count; j++) {
           const slot = document.createElement("div");
           slot.className = "slot";
           slot.ondragover = (e) => e.preventDefault();
@@ -153,10 +160,24 @@ l<!DOCTYPE html>
     function updateStats() {
       const cards = pitch.querySelectorAll(".player-card");
       let total = 0;
+      const chemieClub = {};
+      const chemieNation = {};
+
       cards.forEach(card => {
-        total += parseInt(card.dataset.rating);
+        const rating = parseInt(card.dataset.rating);
+        const club = card.dataset.club;
+        const nation = card.dataset.nation;
+        total += rating;
+        chemieClub[club] = (chemieClub[club] || 0) + 1;
+        chemieNation[nation] = (chemieNation[nation] || 0) + 1;
       });
+
       const avg = cards.length ? (total / cards.length).toFixed(1) : 0;
+      const maxClub = Math.max(0, ...Object.values(chemieClub));
+      const maxNation = Math.max(0, ...Object.values(chemieNation));
+      const chemie = maxClub + maxNation;
+
+      statsDisplay.textContent = `Durchschnittliches Rating: ${avg} | Chemie: ${chemie}`;
       document.title = `EAFC Squad Builder | ⬆ Avg: ${avg}`;
     }
 
@@ -167,6 +188,8 @@ l<!DOCTYPE html>
       card.id = `player-${index}`;
       card.dataset.name = p.name;
       card.dataset.rating = p.rating;
+      card.dataset.club = p.club;
+      card.dataset.nation = p.nation;
       card.innerHTML = `<img src="${p.img}" alt="${p.name}" /><span>${p.name}</span>`;
       card.ondragstart = (e) => e.dataTransfer.setData("text", card.id);
       card.onclick = () => bank.appendChild(card);
@@ -181,6 +204,7 @@ l<!DOCTYPE html>
   </script>
 </body>
 </html>
+
 
 
 
