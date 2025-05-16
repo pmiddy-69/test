@@ -35,68 +35,134 @@
 
 
 
-      <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Squad Builder</title>
+  <title>EAFC 25 Squad Builder</title>
   <style>
-    body { font-family: sans-serif; background: #0b2a2f; color: white; text-align: center; }
-    .field { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+    body {
+      background-color: #0b2a2f;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    .field {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 40px auto;
+      max-width: 800px;
+    }
     .position {
       background: #1c4c54;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 0 8px #0ff;
+      min-height: 180px;
     }
-    select {
-      padding: 5px;
-      margin-top: 10px;
+    .player-img {
+      width: 100px;
+      height: 140px;
+      object-fit: cover;
+      border: 2px solid white;
+      border-radius: 8px;
+      cursor: grab;
+    }
+    .bench {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 20px;
+    }
+    .dropzone {
+      min-height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px dashed white;
+      border-radius: 8px;
     }
   </style>
 </head>
 <body>
 
-<h1>EAFC 25 – Mini Squad Builder</h1>
-<div class="field">
-  <div class="position">
-    <h3>Torwart</h3>
-    <select onchange="updateSquad()">
-      <option value="Neuer">Neuer</option>
-      <option value="Ter Stegen">Ter Stegen</option>
-      <option value="Donnarumma">Donnarumma</option>
-    </select>
-  </div>
-  <div class="position">
-    <h3>Stürmer</h3>
-    <select onchange="updateSquad()">
-      <option value="Mbappé">Mbappé</option>
-      <option value="Haaland">Haaland</option>
-      <option value="Kane">Kane</option>
-    </select>
-  </div>
-  <div class="position">
-    <h3>Mittelfeld</h3>
-    <select onchange="updateSquad()">
-      <option value="De Bruyne">De Bruyne</option>
-      <option value="Modrić">Modrić</option>
-      <option value="Bellingham">Bellingham</option>
-    </select>
-  </div>
+<h1>EAFC 25 – Squad Builder (Drag & Drop)</h1>
+
+<div class="bench">
+  <img src="https://via.placeholder.com/100x140?text=Mbappe" draggable="true" class="player-img" data-name="Mbappé" data-rating="91" data-nation="France">
+  <img src="https://via.placeholder.com/100x140?text=Haaland" draggable="true" class="player-img" data-name="Haaland" data-rating="90" data-nation="Norway">
+  <img src="https://via.placeholder.com/100x140?text=Kane" draggable="true" class="player-img" data-name="Kane" data-rating="89" data-nation="England">
+  <img src="https://via.placeholder.com/100x140?text=Modric" draggable="true" class="player-img" data-name="Modrić" data-rating="87" data-nation="Croatia">
+  <img src="https://via.placeholder.com/100x140?text=Bellingham" draggable="true" class="player-img" data-name="Bellingham" data-rating="86" data-nation="England">
+  <img src="https://via.placeholder.com/100x140?text=De+Gea" draggable="true" class="player-img" data-name="De Gea" data-rating="85" data-nation="Spain">
 </div>
 
-<h2 id="summary">Dein Team: </h2>
+<div class="field">
+  <div class="position dropzone" data-position="Torwart"></div>
+  <div class="position dropzone" data-position="Mittelfeld"></div>
+  <div class="position dropzone" data-position="Stürmer"></div>
+</div>
+
+<h2 id="summary">Durchschnittliches Rating: 0 | Chemie: 0%</h2>
 
 <script>
-  function updateSquad() {
-    const selects = document.querySelectorAll('select');
-    let team = Array.from(selects).map(sel => sel.value);
-    document.getElementById('summary').innerText = "Dein Team: " + team.join(", ");
+  const dropzones = document.querySelectorAll('.dropzone');
+  const summary = document.getElementById('summary');
+
+  document.querySelectorAll('.player-img').forEach(img => {
+    img.addEventListener('dragstart', (e) => {
+      e.dataTransfer.setData('text/html', e.target.outerHTML);
+    });
+  });
+
+  dropzones.forEach(zone => {
+    zone.addEventListener('dragover', (e) => e.preventDefault());
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      zone.innerHTML = e.dataTransfer.getData('text/html');
+      updateStats();
+    });
+  });
+
+  function updateStats() {
+    let totalRating = 0;
+    let count = 0;
+    let nations = [];
+
+    dropzones.forEach(zone => {
+      const img = zone.querySelector('img');
+      if (img) {
+        const rating = parseInt(img.dataset.rating);
+        const nation = img.dataset.nation;
+        totalRating += rating;
+        nations.push(nation);
+        count++;
+      }
+    });
+
+    const average = count > 0 ? (totalRating / count).toFixed(1) : 0;
+
+    // Chemie = % der Spieler mit der gleichen Nation (mehr = besser)
+    const chemie = count > 1 ? Math.round((getMostCommonCount(nations) / count) * 100) : 0;
+
+    summary.textContent = `Durchschnittliches Rating: ${average} | Chemie: ${chemie}%`;
+  }
+
+  function getMostCommonCount(arr) {
+    const map = {};
+    arr.forEach(val => map[val] = (map[val] || 0) + 1);
+    return Math.max(...Object.values(map));
   }
 </script>
 
 </body>
 </html>
+ 
 
 
 
