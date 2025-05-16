@@ -35,4 +35,70 @@
 
 
 
+      <!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Squad Builder</title>
+  <style>
+    body { font-family: sans-serif; background: #0b2a2f; color: white; text-align: center; }
+    .field { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 40px; }
+    .position {
+      background: #1c4c54;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 8px #0ff;
+    }
+    select {
+      padding: 5px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>EAFC 25 – Mini Squad Builder</h1>
+<div class="field">
+  <div class="position">
+    <h3>Torwart</h3>
+    <select onchange="updateSquad()">
+      <option value="Neuer">Neuer</option>
+      <option value="Ter Stegen">Ter Stegen</option>
+      <option value="Donnarumma">Donnarumma</option>
+    </select>
+  </div>
+  <div class="position">
+    <h3>Stürmer</h3>
+    <select onchange="updateSquad()">
+      <option value="Mbappé">Mbappé</option>
+      <option value="Haaland">Haaland</option>
+      <option value="Kane">Kane</option>
+    </select>
+  </div>
+  <div class="position">
+    <h3>Mittelfeld</h3>
+    <select onchange="updateSquad()">
+      <option value="De Bruyne">De Bruyne</option>
+      <option value="Modrić">Modrić</option>
+      <option value="Bellingham">Bellingham</option>
+    </select>
+  </div>
+</div>
+
+<h2 id="summary">Dein Team: </h2>
+
+<script>
+  function updateSquad() {
+    const selects = document.querySelectorAll('select');
+    let team = Array.from(selects).map(sel => sel.value);
+    document.getElementById('summary').innerText = "Dein Team: " + team.join(", ");
+  }
+</script>
+
+</body>
+</html>
+
+
+
+
 
