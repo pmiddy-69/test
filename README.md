@@ -35,149 +35,188 @@
 
 
 
-<!DOCTYPE html>
+
+l<!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>EAFC 25 Squad Builder</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EAFC Squad Builder</title>
   <style>
     body {
-      background-color: #0b2a2f;
-      color: white;
       font-family: sans-serif;
-      text-align: center;
+      margin: 0;
+      padding: 0;
+      background-color: #0f172a;
+      color: white;
     }
-    h1 {
-      margin-top: 20px;
+    .formation-selector {
+      margin: 1rem;
     }
-    .field {
+    .pitch {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin: 40px auto;
-      max-width: 800px;
+      gap: 10px;
+      justify-content: center;
+      align-content: center;
+      margin: 2rem auto;
     }
-    .position {
-      background: #1c4c54;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 8px #0ff;
-      min-height: 180px;
-    }
-    .player-img {
+    .slot, .player-card {
       width: 100px;
       height: 140px;
-      object-fit: cover;
-      border: 2px solid white;
-      border-radius: 8px;
-      cursor: grab;
-    }
-    .bench {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin: 20px;
-    }
-    .dropzone {
-      min-height: 140px;
+      background-color: #1e293b;
       display: flex;
       justify-content: center;
       align-items: center;
+      border-radius: 10px;
+      cursor: pointer;
       border: 2px dashed white;
-      border-radius: 8px;
+    }
+    .player-card {
+      border: none;
+      flex-direction: column;
+    }
+    .player-card img {
+      width: 80px;
+    }
+    .bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 1rem;
     }
   </style>
 </head>
 <body>
+  <div class="formation-selector">
+    <label for="formation">Formation wählen:</label>
+    <select id="formation">
+      <option value="4-3-3">4-3-3</option>
+      <option value="4-4-2">4-4-2</option>
+      <option value="3-5-2">3-5-2</option>
+    </select>
+  </div>
+  <div id="pitch" class="pitch"></div>
+  <h2>Bank</h2>
+  <div class="bank" id="bank"></div>
 
-<h1>EAFC 25 – Squad Builder (Drag & Drop)</h1>
+  <script>
+    const formations = {
+      "4-3-3": [4, 3, 3, 1],
+      "4-4-2": [4, 4, 2, 1],
+      "3-5-2": [3, 5, 2, 1],
+    };
 
-<div class="bench" id="bench">
-  <img src="https://cdn.sofifa.net/players/231/747/24_120.png" draggable="true" class="player-img" data-name="Mbappé" data-rating="91" data-nation="France" data-club="PSG">
-  <img src="https://cdn.sofifa.net/players/239/085/24_120.png" draggable="true" class="player-img" data-name="Haaland" data-rating="91" data-nation="Norway" data-club="Man City">
-  <img src="https://cdn.sofifa.net/players/202/126/24_120.png" draggable="true" class="player-img" data-name="Kane" data-rating="89" data-nation="England" data-club="Bayern">
-  <img src="https://cdn.sofifa.net/players/177/003/24_120.png" draggable="true" class="player-img" data-name="Modrić" data-rating="87" data-nation="Croatia" data-club="Real Madrid">
-  <img src="https://cdn.sofifa.net/players/247/635/24_120.png" draggable="true" class="player-img" data-name="Bellingham" data-rating="86" data-nation="England" data-club="Real Madrid">
-  <img src="https://cdn.sofifa.net/players/193/080/24_120.png" draggable="true" class="player-img" data-name="De Gea" data-rating="85" data-nation="Spain" data-club="Free Agent">
-</div>
+    const players = [
+      { name: "Mbappé", rating: 91, nation: "France", club: "PSG", img: "https://cdn.sofifa.net/players/231/747/24_120.png" },
+      { name: "Haaland", rating: 91, nation: "Norway", club: "Man City", img: "https://cdn.sofifa.net/players/239/085/24_120.png" },
+      { name: "Messi", rating: 90, nation: "Argentina", club: "Inter Miami", img: "https://cdn.sofifa.net/players/158/023/24_120.png" },
+      { name: "De Bruyne", rating: 91, nation: "Belgium", club: "Man City", img: "https://cdn.sofifa.net/players/192/985/24_120.png" },
+      { name: "Modrić", rating: 87, nation: "Croatia", club: "Real Madrid", img: "https://cdn.sofifa.net/players/177/003/24_120.png" },
+      { name: "Rodri", rating: 89, nation: "Spain", club: "Man City", img: "https://cdn.sofifa.net/players/231/866/24_120.png" },
+      { name: "Salah", rating: 89, nation: "Egypt", club: "Liverpool", img: "https://cdn.sofifa.net/players/209/331/24_120.png" },
+      { name: "Vinícius Jr.", rating: 89, nation: "Brazil", club: "Real Madrid", img: "https://cdn.sofifa.net/players/238/794/24_120.png" },
+      { name: "Lewandowski", rating: 90, nation: "Poland", club: "Barcelona", img: "https://cdn.sofifa.net/players/188/545/24_120.png" },
+      { name: "Alisson", rating: 89, nation: "Brazil", club: "Liverpool", img: "https://cdn.sofifa.net/players/212/831/24_120.png" },
+    ];
 
-<div class="field">
-  <div class="position dropzone" data-position="Torwart"></div>
-  <div class="position dropzone" data-position="Mittelfeld"></div>
-  <div class="position dropzone" data-position="Stürmer"></div>
-</div>
+    const pitch = document.getElementById("pitch");
+    const bank = document.getElementById("bank");
+    const formationSelector = document.getElementById("formation");
 
-<h2 id="summary">Durchschnittliches Rating: 0 | Chemie: 0</h2>
-
-<script>
-  const dropzones = document.querySelectorAll('.dropzone');
-  const summary = document.getElementById('summary');
-  const bench = document.getElementById('bench');
-
-  function makeDraggable(img) {
-    img.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData('text/plain', JSON.stringify({
-        outerHTML: e.target.outerHTML,
-        name: e.target.dataset.name
-      }));
-    });
-  }
-
-  document.querySelectorAll('.player-img').forEach(makeDraggable);
-
-  dropzones.forEach(zone => {
-    zone.addEventListener('dragover', (e) => e.preventDefault());
-    zone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-      const newPlayer = document.createElement('div');
-      newPlayer.innerHTML = data.outerHTML;
-      const img = newPlayer.firstChild;
-      img.addEventListener('click', () => {
-        bench.appendChild(img);
-        updateStats();
+    function createPitch(formation) {
+      pitch.innerHTML = "";
+      const rows = formations[formation];
+      rows.forEach((count) => {
+        const row = document.createElement("div");
+        row.style.display = "flex";
+        row.style.justifyContent = "center";
+        row.style.gap = "10px";
+        for (let i = 0; i < count; i++) {
+          const slot = document.createElement("div");
+          slot.className = "slot";
+          slot.ondragover = (e) => e.preventDefault();
+          slot.ondrop = (e) => {
+            const id = e.dataTransfer.getData("text");
+            const card = document.getElementById(id);
+            if (!Array.from(pitch.querySelectorAll(".player-card")).some(c => c.dataset.name === card.dataset.name)) {
+              slot.innerHTML = "";
+              slot.appendChild(card);
+              updateStats();
+            }
+          };
+          row.appendChild(slot);
+        }
+        pitch.appendChild(row);
       });
-      zone.innerHTML = '';
-      zone.appendChild(img);
-      updateStats();
+    }
+
+    function updateStats() {
+      const cards = pitch.querySelectorAll(".player-card");
+      let total = 0;
+      cards.forEach(card => {
+        total += parseInt(card.dataset.rating);
+      });
+      const avg = cards.length ? (total / cards.length).toFixed(1) : 0;
+      document.title = `EAFC Squad Builder | ⬆ Avg: ${avg}`;
+    }
+
+    players.forEach((p, index) => {
+      const card = document.createElement("div");
+      card.className = "player-card";
+      card.draggable = true;
+      card.id = `player-${index}`;
+      card.dataset.name = p.name;
+      card.dataset.rating = p.rating;
+      card.innerHTML = `<img src="${p.img}" alt="${p.name}" /><span>${p.name}</span>`;
+      card.ondragstart = (e) => e.dataTransfer.setData("text", card.id);
+      card.onclick = () => bank.appendChild(card);
+      bank.appendChild(card);
     });
-  });
 
-  function updateStats() {
-    let totalRating = 0;
-    let count = 0;
-    let nations = [];
-    let clubs = [];
-
-    dropzones.forEach(zone => {
-      const img = zone.querySelector('img');
-      if (img) {
-        const rating = parseInt(img.dataset.rating);
-        totalRating += rating;
-        nations.push(img.dataset.nation);
-        clubs.push(img.dataset.club);
-        count++;
-      }
+    formationSelector.addEventListener("change", (e) => {
+      createPitch(e.target.value);
     });
 
-    const average = count > 0 ? (totalRating / count).toFixed(1) : 0;
-    const nationBonus = getMostCommonCount(nations);
-    const clubBonus = getMostCommonCount(clubs);
-    const chemie = Math.min(nationBonus + clubBonus, count);
-
-    summary.textContent = `Durchschnittliches Rating: ${average} | Chemie: ${chemie}/${count}`;
-  }
-
-  function getMostCommonCount(arr) {
-    const map = {};
-    arr.forEach(val => map[val] = (map[val] || 0) + 1);
-    return arr.length ? Math.max(...Object.values(map)) : 0;
-  }
-</script>
-
+    createPitch("4-3-3");
+  </script>
 </body>
 </html>
+
+
+
+
+
+
+
+const players = [
+  { name: "Mbappé", rating: 91, nation: "France", club: "PSG", img: "https://cdn.sofifa.net/players/231/747/24_120.png" },
+  { name: "Haaland", rating: 91, nation: "Norway", club: "Man City", img: "https://cdn.sofifa.net/players/239/085/24_120.png" },
+  { name: "Kane", rating: 89, nation: "England", club: "Bayern", img: "https://cdn.sofifa.net/players/202/126/24_120.png" },
+  { name: "Modrić", rating: 87, nation: "Croatia", club: "Real Madrid", img: "https://cdn.sofifa.net/players/177/003/24_120.png" },
+  { name: "Bellingham", rating: 86, nation: "England", club: "Real Madrid", img: "https://cdn.sofifa.net/players/247/635/24_120.png" },
+  { name: "De Gea", rating: 85, nation: "Spain", club: "Free Agent", img: "https://cdn.sofifa.net/players/193/080/24_120.png" },
+  { name: "De Bruyne", rating: 91, nation: "Belgium", club: "Man City", img: "https://cdn.sofifa.net/players/192/985/24_120.png" },
+  { name: "Messi", rating: 90, nation: "Argentina", club: "Inter Miami", img: "https://cdn.sofifa.net/players/158/023/24_120.png" },
+  { name: "Salah", rating: 89, nation: "Egypt", club: "Liverpool", img: "https://cdn.sofifa.net/players/209/331/24_120.png" },
+  { name: "Neymar", rating: 89, nation: "Brazil", club: "Al Hilal", img: "https://cdn.sofifa.net/players/190/871/24_120.png" },
+  { name: "Vinícius Jr.", rating: 89, nation: "Brazil", club: "Real Madrid", img: "https://cdn.sofifa.net/players/238/794/24_120.png" },
+  { name: "Lewandowski", rating: 90, nation: "Poland", club: "Barcelona", img: "https://cdn.sofifa.net/players/188/545/24_120.png" },
+  { name: "Valverde", rating: 88, nation: "Uruguay", club: "Real Madrid", img: "https://cdn.sofifa.net/players/237/692/24_120.png" },
+  { name: "Kimmich", rating: 88, nation: "Germany", club: "Bayern", img: "https://cdn.sofifa.net/players/212/622/24_120.png" },
+  { name: "Alisson", rating: 89, nation: "Brazil", club: "Liverpool", img: "https://cdn.sofifa.net/players/212/831/24_120.png" },
+  { name: "Ter Stegen", rating: 89, nation: "Germany", club: "Barcelona", img: "https://cdn.sofifa.net/players/192/448/24_120.png" },
+  { name: "Ederson", rating: 88, nation: "Brazil", club: "Man City", img: "https://cdn.sofifa.net/players/208/330/24_120.png" },
+  { name: "van Dijk", rating: 89, nation: "Netherlands", club: "Liverpool", img: "https://cdn.sofifa.net/players/203/376/24_120.png" },
+  { name: "Rúben Dias", rating: 88, nation: "Portugal", club: "Man City", img: "https://cdn.sofifa.net/players/239/818/24_120.png" },
+  { name: "Courtois", rating: 90, nation: "Belgium", club: "Real Madrid", img: "https://cdn.sofifa.net/players/192/119/24_120.png" },
+  { name: "Rodri", rating: 89, nation: "Spain", club: "Man City", img: "https://cdn.sofifa.net/players/231/866/24_120.png" },
+  { name: "Son Heung-min", rating: 87, nation: "South Korea", club: "Tottenham", img: "https://cdn.sofifa.net/players/200/104/24_120.png" },
+  { name: "Bruno Fernandes", rating: 88, nation: "Portugal", club: "Man Utd", img: "https://cdn.sofifa.net/players/208/722/24_120.png" },
+  // Weitere Spieler ergänzen für vollständige Top 100 (z.B. von SoFIFA kopieren)
+];
+
+// Der Rest des Codes bleibt gleich
+
 
  
 
