@@ -8,13 +8,13 @@
         
         <body>
 
-          <h1>Wo kann ich EA FC 25™ spielen ?</h1>
+            <h1>Wo kann ich EA FC 25™ spielen ?</h1>
       
-          <div class="container">
+            <div class="container">
               <div class="text">
                   <ul>
-                      <li>PlayStation® 5</li>
-                      <li>PlayStation® 4</li>
+                    <li>PlayStation® 5</li>
+                    <li>PlayStation® 4</li>
                       <li>Xbox One</li>
                       <li>Xbox Series X</li>
                       <li>Nintendo Switch™</li>
@@ -23,7 +23,7 @@
               </div>
       
               <div class="video">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/pBM2xyco_Kg?si=Q-8jKPzcqI0hReFn" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/pBM2xyco_Kg?si=Q8jKPzcqI0hReFntitle="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                   </iframe>
               </div>
           </div>
