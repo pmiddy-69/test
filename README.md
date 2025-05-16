@@ -79,9 +79,18 @@
     .player-card {
       border: none;
       flex-direction: column;
+      position: relative;
     }
     .player-card img {
       width: 80px;
+    }
+    .chemie-display {
+      position: absolute;
+      bottom: 5px;
+      background: rgba(0,0,0,0.6);
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-size: 12px;
     }
     .bank {
       display: flex;
@@ -132,8 +141,11 @@
 
     function createPitch(formation) {
       pitch.innerHTML = "";
+      bank.innerHTML = "";
+      players.forEach((p, index) => addPlayerToBank(p, index));
+
       const rows = formations[formation];
-      rows.forEach((count, i) => {
+      rows.forEach(count => {
         const row = document.createElement("div");
         row.style.display = "flex";
         row.style.justifyContent = "center";
@@ -157,6 +169,24 @@
       });
     }
 
+    function addPlayerToBank(p, index) {
+      const card = document.createElement("div");
+      card.className = "player-card";
+      card.draggable = true;
+      card.id = `player-${index}`;
+      card.dataset.name = p.name;
+      card.dataset.rating = p.rating;
+      card.dataset.club = p.club;
+      card.dataset.nation = p.nation;
+      card.innerHTML = `<img src="${p.img}" alt="${p.name}" /><span>${p.name}</span><div class="chemie-display">🔵0</div>`;
+      card.ondragstart = (e) => e.dataTransfer.setData("text", card.id);
+      card.onclick = () => {
+        bank.appendChild(card);
+        updateStats();
+      };
+      bank.appendChild(card);
+    }
+
     function updateStats() {
       const cards = pitch.querySelectorAll(".player-card");
       let total = 0;
@@ -173,28 +203,19 @@
       });
 
       const avg = cards.length ? (total / cards.length).toFixed(1) : 0;
-      const maxClub = Math.max(0, ...Object.values(chemieClub));
-      const maxNation = Math.max(0, ...Object.values(chemieNation));
-      const chemie = maxClub + maxNation;
+      statsDisplay.textContent = `Durchschnittliches Rating: ${avg}`;
 
-      statsDisplay.textContent = `Durchschnittliches Rating: ${avg} | Chemie: ${chemie}`;
-      document.title = `EAFC Squad Builder | ⬆ Avg: ${avg}`;
+      // EAFC 3-Punkte-Chemie-System
+      cards.forEach(card => {
+        const club = card.dataset.club;
+        const nation = card.dataset.nation;
+        let chemie = 0;
+        if (chemieClub[club] >= 2) chemie++;
+        if (chemieClub[club] >= 4) chemie++;
+        if (chemieNation[nation] >= 2) chemie++;
+        card.querySelector(".chemie-display").textContent = `🔵${chemie}`;
+      });
     }
-
-    players.forEach((p, index) => {
-      const card = document.createElement("div");
-      card.className = "player-card";
-      card.draggable = true;
-      card.id = `player-${index}`;
-      card.dataset.name = p.name;
-      card.dataset.rating = p.rating;
-      card.dataset.club = p.club;
-      card.dataset.nation = p.nation;
-      card.innerHTML = `<img src="${p.img}" alt="${p.name}" /><span>${p.name}</span>`;
-      card.ondragstart = (e) => e.dataTransfer.setData("text", card.id);
-      card.onclick = () => bank.appendChild(card);
-      bank.appendChild(card);
-    });
 
     formationSelector.addEventListener("change", (e) => {
       createPitch(e.target.value);
@@ -204,6 +225,7 @@
   </script>
 </body>
 </html>
+
 
 
 
