@@ -112,6 +112,7 @@
       <option value="4-3-3">4-3-3</option>
       <option value="4-4-2">4-4-2</option>
       <option value="3-5-2">3-5-2</option>
+      <option value="4-2-3-1">4-2-3-1</option>
     </select>
   </div>
   <div class="stats" id="stats">Durchschnittliches Rating: 0 | Chemie: 0</div>
@@ -123,20 +124,26 @@
     const formations = {
       "4-3-3": [["GK"], ["LB", "CB", "CB", "RB"], ["CM", "CM", "CM"], ["LW", "ST", "RW"]],
       "4-4-2": [["GK"], ["LB", "CB", "CB", "RB"], ["LM", "CM", "CM", "RM"], ["ST", "ST"]],
-      "3-5-2": [["GK"], ["CB", "CB", "CB"], ["LM", "CM", "CAM", "CM", "RM"], ["ST", "ST"]]
+      "3-5-2": [["GK"], ["CB", "CB", "CB"], ["LM", "CM", "CAM", "CM", "RM"], ["ST", "ST"]],
+      "4-2-3-1": [["GK"], ["LB", "CB", "CB", "RB"], ["CDM", "CDM"], ["CAM", "LAM", "RAM"], ["ST"]]
     };
 
     const players = [
-      { name: "Mbappé", rating: 91, nation: "France", club: "PSG", pos: "ST", img: "https://cdn.sofifa.net/players/231/747/24_120.png" },
-      { name: "Haaland", rating: 91, nation: "Norway", club: "Man City", pos: "ST", img: "https://cdn.sofifa.net/players/239/085/24_120.png" },
-      { name: "Messi", rating: 90, nation: "Argentina", club: "Inter Miami", pos: "RW", img: "https://cdn.sofifa.net/players/158/023/24_120.png" },
-      { name: "De Bruyne", rating: 91, nation: "Belgium", club: "Man City", pos: "CM", img: "https://cdn.sofifa.net/players/192/985/24_120.png" },
-      { name: "Modrić", rating: 87, nation: "Croatia", club: "Real Madrid", pos: "CM", img: "https://cdn.sofifa.net/players/177/003/24_120.png" },
-      { name: "Rodri", rating: 89, nation: "Spain", club: "Man City", pos: "CDM", img: "https://cdn.sofifa.net/players/231/866/24_120.png" },
-      { name: "Salah", rating: 89, nation: "Egypt", club: "Liverpool", pos: "RW", img: "https://cdn.sofifa.net/players/209/331/24_120.png" },
-      { name: "Vinícius Jr.", rating: 89, nation: "Brazil", club: "Real Madrid", pos: "LW", img: "https://cdn.sofifa.net/players/238/794/24_120.png" },
-      { name: "Lewandowski", rating: 90, nation: "Poland", club: "Barcelona", pos: "ST", img: "https://cdn.sofifa.net/players/188/545/24_120.png" },
-      { name: "Alisson", rating: 89, nation: "Brazil", club: "Liverpool", pos: "GK", img: "https://cdn.sofifa.net/players/212/831/24_120.png" },
+      { name: "Mbappé", rating: 91, nation: "France", club: "PSG", pos: ["ST", "LW"] , img: "https://cdn.sofifa.net/players/231/747/24_120.png" },
+      { name: "Haaland", rating: 91, nation: "Norway", club: "Man City", pos: ["ST"] , img: "https://cdn.sofifa.net/players/239/085/24_120.png" },
+      { name: "Messi", rating: 90, nation: "Argentina", club: "Inter Miami", pos: ["RW", "CAM"] , img: "https://cdn.sofifa.net/players/158/023/24_120.png" },
+      { name: "De Bruyne", rating: 91, nation: "Belgium", club: "Man City", pos: ["CM", "CAM"] , img: "https://cdn.sofifa.net/players/192/985/24_120.png" },
+      { name: "Modrić", rating: 87, nation: "Croatia", club: "Real Madrid", pos: ["CM"] , img: "https://cdn.sofifa.net/players/177/003/24_120.png" },
+      { name: "Rodri", rating: 89, nation: "Spain", club: "Man City", pos: ["CDM", "CM"] , img: "https://cdn.sofifa.net/players/231/866/24_120.png" },
+      { name: "Salah", rating: 89, nation: "Egypt", club: "Liverpool", pos: ["RW"] , img: "https://cdn.sofifa.net/players/209/331/24_120.png" },
+      { name: "Vinícius Jr.", rating: 89, nation: "Brazil", club: "Real Madrid", pos: ["LW"] , img: "https://cdn.sofifa.net/players/238/794/24_120.png" },
+      { name: "Lewandowski", rating: 90, nation: "Poland", club: "Barcelona", pos: ["ST"] , img: "https://cdn.sofifa.net/players/188/545/24_120.png" },
+      { name: "Alisson", rating: 89, nation: "Brazil", club: "Liverpool", pos: ["GK"] , img: "https://cdn.sofifa.net/players/212/831/24_120.png" },
+      { name: "Neymar", rating: 88, nation: "Brazil", club: "Al Hilal", pos: ["LW", "CAM"] , img: "https://cdn.sofifa.net/players/190/871/24_120.png" },
+      { name: "Kimmich", rating: 88, nation: "Germany", club: "Bayern Munich", pos: ["CDM", "CM"] , img: "https://cdn.sofifa.net/players/212/622/24_120.png" },
+      { name: "Kane", rating: 90, nation: "England", club: "Bayern Munich", pos: ["ST"] , img: "https://cdn.sofifa.net/players/202/126/24_120.png" },
+      { name: "Ter Stegen", rating: 89, nation: "Germany", club: "Barcelona", pos: ["GK"] , img: "https://cdn.sofifa.net/players/192/448/24_120.png" },
+      { name: "Bellingham", rating: 86, nation: "England", club: "Real Madrid", pos: ["CM", "CAM"] , img: "https://cdn.sofifa.net/players/246/199/24_120.png" }
     ];
 
     const pitch = document.getElementById("pitch");
@@ -162,7 +169,8 @@
             const id = e.dataTransfer.getData("text");
             const card = document.getElementById(id);
             if (!Array.from(pitch.querySelectorAll(".player-card")).some(c => c.dataset.name === card.dataset.name)) {
-              if (card.dataset.pos === slot.dataset.pos) {
+              const positions = JSON.parse(card.dataset.pos);
+              if (positions.includes(slot.dataset.pos)) {
                 if (slot.firstChild) bank.appendChild(slot.firstChild);
                 slot.innerHTML = "";
                 slot.appendChild(card);
@@ -186,7 +194,7 @@
       card.dataset.rating = p.rating;
       card.dataset.club = p.club;
       card.dataset.nation = p.nation;
-      card.dataset.pos = p.pos;
+      card.dataset.pos = JSON.stringify(p.pos);
       card.innerHTML = `<img src="${p.img}" alt="${p.name}" /><span>${p.name}</span><div class="chemie-display">🔵0</div>`;
       card.ondragstart = (e) => e.dataTransfer.setData("text", card.id);
       card.onclick = () => {
@@ -233,8 +241,6 @@
   </script>
 </body>
 </html>
-
-
 
 
 
