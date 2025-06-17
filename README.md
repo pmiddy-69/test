@@ -68,3 +68,27 @@
 
 
 
+{ name: "Rashford", rating: 87, nation: "England", club: "Man United", liga: "Premier League", pos: ["ST", "LW"], img: "https://cdn.sofifa.net/players/230/682/24_120.png" },
+      { name: "Gabriel Jesus", rating: 85, nation: "Brazil", club: "Arsenal", liga: "Premier League", pos: ["ST"], img: "https://cdn.sofifa.net/players/227/044/24_120.png" },
+      { name: "Son Heung-min", rating: 88, nation: "South Korea", club: "Tottenham", liga: "Premier League", pos: ["LW", "RW"], img: "https://cdn.sofifa.net/players/209/331/24_120.png" },
+      { name: "Kingsley Coman", rating: 85, nation: "France", club: "Bayern Munich", liga: "Bundesliga", pos: ["LW", "RM"], img: "https://cdn.sofifa.net/players/220/130/24_120.png" },
+      { name: "Riyad Mahrez", rating: 85, nation: "Algeria", club: "Man City", liga: "Premier League", pos: ["RW"], img: "https://cdn.sofifa.net/players/204/825/24_120.png" },
+      { name: "Ángel Di María", rating: 84, nation: "Argentina", club: "Benfica", liga: "Primeira Liga", pos: ["RW", "CAM"], img: "https://cdn.sofifa.net/players/183/277/24_120.png" },
+      { name: "Casemiro", rating: 86, nation: "Brazil", club: "Man United", liga: "Premier League", pos: ["CDM", "CM"], img: "https://cdn.sofifa.net/players/190/871/24_120.png" },
+      { name: "Thomas Müller", rating: 85, nation: "Germany", club: "Bayern Munich", liga: "Bundesliga", pos: ["CAM", "RW"], img: "https://cdn.sofifa.net/players/189/157/24_120.png" },
+      { name: "Phil Foden", rating: 86, nation: "England", club: "Man City", liga: "Premier League", pos: ["CAM", "RM", "RW"], img: "https://cdn.sofifa.net/players/247/495/24_120.png" },
+      { name: "Sergej Milinković-Savić", rating: 85, nation: "Serbia", club: "Lazio", liga: "Serie A", pos: ["CM", "CAM"], img: "https://cdn.sofifa.net/players/212/956/24_120.png" },
+      { name: "Jorginho", rating: 84, nation: "Italy", club: "Arsenal", liga: "Premier League", pos: ["CDM", "CM"], img: "https://cdn.sofifa.net/players/205/747/24_120.png" },
+      { name: "Declan Rice", rating: 86, nation: "England", club: "Arsenal", liga: "Premier League", pos: ["CDM", "CM"], img: "https://cdn.sofifa.net/players/235/065/24_120.png" },
+      { name: "Trent Alexander-Arnold", rating: 85, nation: "England", club: "Liverpool", liga: "Premier League", pos: ["RB"], img: "https://cdn.sofifa.net/players/231/747/24_120.png" },
+      { name: "Achraf Hakimi", rating: 86, nation: "Morocco", club: "Paris Saint-Germain", liga: "Ligue 1", pos: ["RB", "RM"], img: "https://cdn.sofifa.net/players/243/412/24_120.png" },
+      { name: "Alex Grimaldo", rating: 83, nation: "Spain", club: "Bayer Leverkusen", liga: "Bundesliga", pos: ["LB", "LM"], img: "https://cdn.sofifa.net/players/230/449/24_120.png" },
+      { name: "Alphonso Davies", rating: 85, nation: "Canada", club: "Bayern Munich", liga: "Bundesliga", pos: ["LB", "LM"], img: "https://cdn.sofifa.net/players/247/233/24_120.png" },
+      { name: "Ederson", rating: 88, nation: "Brazil", club: "Man City", liga: "Premier League", pos: ["GK"], img: "https://cdn.sofifa.net/players/232/340/24_120.png" },
+      { name: "Manuel Neuer", rating: 88, nation: "Germany", club: "Bayern Munich", liga: "Bundesliga", pos: ["GK"], img: "https://cdn.sofifa.net/players/180/932/24_120.png" }
+
+
+
+
+
+
